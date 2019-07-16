@@ -26,14 +26,17 @@
 //! [1]: https://en.wikipedia.org/wiki/MD4
 //! [2]: https://github.com/RustCrypto/hashes
 #![no_std]
+#![cfg_attr(all(target_env = "sgx", target_vendor = "mesalock"), feature(rustc_private))]
 #![doc(html_logo_url =
     "https://raw.githubusercontent.com/RustCrypto/meta/master/logo_small.png")]
 #![cfg_attr(feature = "cargo-clippy", allow(needless_range_loop))]
 #[macro_use] extern crate opaque_debug;
 #[macro_use] pub extern crate digest;
 extern crate block_buffer;
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", feature = "mesalock_sgx", target_env = "sgx"))]
 extern crate std;
+#[cfg(all(feature = "std", feature = "mesalock_sgx", not(target_env = "sgx")))]
+extern crate sgx_tstd as std;
 
 pub use digest::Digest;
 use digest::{Input, BlockInput, FixedOutput, Reset};

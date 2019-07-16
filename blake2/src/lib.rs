@@ -90,14 +90,17 @@
 
 #![cfg_attr(feature = "simd", feature(platform_intrinsics, repr_simd))]
 #![cfg_attr(feature = "simd_asm", feature(asm))]
+#![cfg_attr(all(target_env = "sgx", target_vendor = "mesalock"), feature(rustc_private))]
 
 #[macro_use] extern crate opaque_debug;
 #[macro_use] pub extern crate digest;
 extern crate byte_tools;
 pub extern crate crypto_mac;
 
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", feature = "mesalock_sgx", target_env = "sgx"))]
 extern crate std;
+#[cfg(all(feature = "std", feature = "mesalock_sgx", not(target_env = "sgx")))]
+extern crate sgx_tstd as std;
 
 mod consts;
 mod as_bytes;

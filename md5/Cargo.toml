@@ -13,19 +13,21 @@ categories = ["cryptography", "no-std"]
 name = "md5"
 
 [dependencies]
-digest = "0.8"
-block-buffer = "0.7"
-md5-asm = { version = "0.4", optional=true}
+digest = { git = "https://github.com/mesalock-linux/rustcrypto-traits-sgx" }
+block-buffer = { git = "https://github.com/mesalock-linux/rustcrypto-utils-sgx" }
+md5-asm = { version = "0.4", optional = true }
 opaque-debug = "0.2"
+sgx_tstd = { rev = "v1.0.9", git = "https://github.com/baidu/rust-sgx-sdk.git", optional = true }
 
 [dev-dependencies]
-digest = { version = "0.8", features = ["dev"] }
-hex-literal = "0.1"
+#digest = { version = "0.8", features = ["dev"] }
+#hex-literal = "0.1"
 
 [features]
-default = ["std"]
-std = ["digest/std"]
+default = ["std", "mesalock_sgx"]
+std = ["digest/std", "mesalock_sgx"]
 asm = ["md5-asm"]
+mesalock_sgx = ["sgx_tstd"]
 
 [badges]
 travis-ci = { repository = "RustCrypto/hashes" }
