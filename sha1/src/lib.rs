@@ -26,13 +26,16 @@
 //! [1]: https://en.wikipedia.org/wiki/SHA-1
 //! [2]: https://github.com/RustCrypto/hashes
 #![no_std]
+#![cfg_attr(all(target_env = "sgx", target_vendor = "mesalock"), feature(rustc_private))]
 #![doc(html_logo_url =
     "https://raw.githubusercontent.com/RustCrypto/meta/master/logo_small.png")]
 extern crate block_buffer;
 #[macro_use] extern crate opaque_debug;
 #[macro_use] pub extern crate digest;
-#[cfg(feature = "std")]
+#[cfg(all(feature = "std", feature = "mesalock_sgx", target_env = "sgx"))]
 extern crate std;
+#[cfg(all(feature = "std", feature = "mesalock_sgx", not(target_env = "sgx")))]
+extern crate sgx_tstd as std;
 #[cfg(not(feature = "asm"))]
 extern crate fake_simd as simd;
 

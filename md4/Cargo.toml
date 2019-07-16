@@ -10,18 +10,20 @@ keywords = ["crypto", "md4", "hash", "digest"]
 categories = ["cryptography", "no-std"]
 
 [dependencies]
-digest = "0.8"
-block-buffer = "0.7"
+digest = { git = "https://github.com/mesalock-linux/rustcrypto-traits-sgx" }
+block-buffer = { git = "https://github.com/mesalock-linux/rustcrypto-utils-sgx" }
 fake-simd = "0.1"
 opaque-debug = "0.2"
+sgx_tstd = { rev = "v1.1.0", git = "https://github.com/apache/teaclave-sgx-sdk.git", optional = true }
 
 [dev-dependencies]
-digest = { version = "0.8", features = ["dev"] }
-hex-literal = "0.1"
+#digest = { version = "0.8", features = ["dev"] }
+#hex-literal = "0.1"
 
 [features]
-default = ["std"]
-std = ["digest/std"]
+default = ["std", "mesalock_sgx"]
+std = ["digest/std", "mesalock_sgx"]
+mesalock_sgx = ["sgx_tstd"]
 
 [badges]
 travis-ci = { repository = "RustCrypto/hashes" }
